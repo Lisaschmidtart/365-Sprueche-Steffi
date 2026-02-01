@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dein Tagesgedanke</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .popup {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      animation: fadeIn 0.4s ease;
+    }
+
+    h1 {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      opacity: 0.6;
+    }
+
+    p {
+      font-size: 1.3rem;
+      line-height: 1.4;
+    }
+
+    button {
+      margin-top: 24px;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 10px;
+      background: #000;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="popup">
+    <h1>Gedanke des Tages</h1>
+    <p id="spruch"></p>
+    <button onclick="window.close()">Schließen</button>
+  </div>
+
+  <script>
+    const sprueche = [
+      "Jeder Tag ist eine neue Chance.",
+      "Du bist weiter, als du denkst.",
+      "Kleine Schritte sind auch Fortschritt.",
+      // ⬇️ hier später bis 365 erweitern
+    ];
+
+    const heute = new Date();
+    const start = new Date(heute.getFullYear(), 0, 0);
+    const tagDesJahres = Math.floor((heute - start) / (1000 * 60 * 60 * 24));
+
+    const index = (tagDesJahres - 1) % sprueche.length;
+    document.getElementById("spruch").innerText = sprueche[index];
+  </script>
+
+</body>
+</html>
