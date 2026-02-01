@@ -67,79 +67,30 @@
     "Jeder Tag ist eine neue Chance.",
     "Du bist weiter, als du denkst.",
     "Kleine Schritte sind auch Fortschritt.",
-    // … bis 365 Sprüche
+    // … hier bis 365 Sprüche eintragen
   ];
 
-  const spruchElement = document.getElementById("spruch");
-
-  function getBerlinerDatum() {
-    const parts = new Intl.DateTimeFormat("de-DE", {
+  // Aktuelles Datum in Berliner Zeit
+  const heuteBerlin = new Date(
+    new Intl.DateTimeFormat("de-DE", {
       timeZone: "Europe/Berlin",
       year: "numeric",
       month: "2-digit",
       day: "2-digit"
-    }).formatToParts(new Date());
+    }).format(new Date()).split(".").reverse().join("-")
+  );
 
-    const map = {};
-    parts.forEach(p => map[p.type] = p.value);
-    return new Date(`${map.year}-${map.month}-${map.day}`);
-  }
+  // Jahresanfang (Berlin-Zeit)
+  const jahresStart = new Date(heuteBerlin.getFullYear(), 0, 1);
 
-  function getSpruchIndex() {
-    const heute = getBerlinerDatum();
-    const jahresStart = new Date(heute.getFullYear(), 0, 1);
-    const tag = Math.floor((heute - jahresStart) / 86400000);
-    return tag % sprueche.length;
-  }
+  // Tagesnummer berechnen (1–365)
+  const tagDesJahres = Math.floor(
+    (heuteBerlin - jahresStart) / (1000 * 60 * 60 * 24)
+  ) + 1;
 
-  function zeigeSpruch(animated = false) {
-    const neuerSpruch = sprueche[getSpruchIndex()];
-
-    if (!animated) {
-      spruchElement.textContent = neuerSpruch;
-      spruchElement.classList.add("fade-in");
-      return;
-    }
-
-    spruchElement.classList.remove("fade-in");
-    spruchElement.classList.add("fade-out");
-
-    setTimeout(() => {
-      spruchElement.textContent = neuerSpruch;
-      spruchElement.classList.remove("fade-out");
-      spruchElement.classList.add("fade-in");
-    }, 600);
-  }
-
-  function millisBisMitternachtBerlin() {
-    const jetzt = new Date();
-    const berlinJetzt = new Date(
-      new Intl.DateTimeFormat("en-US", {
-        timeZone: "Europe/Berlin",
-        hour12: false,
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-      }).format(jetzt).replace(/,/g, "")
-    );
-
-    const morgen = new Date(berlinJetzt);
-    morgen.setHours(24, 0, 0, 0);
-
-    return morgen - berlinJetzt;
-  }
-
-  // Initial anzeigen
-  zeigeSpruch();
-
-  // Tageswechsel planen
-  setTimeout(() => {
-    zeigeSpruch(true);
-    setInterval(() => zeigeSpruch(true), 86400000);
-  }, millisBisMitternachtBerlin());
+  // Spruch auswählen
+  const index = (tagDesJahres - 1) % sprueche.length;
+  document.getElementById("spruch").innerText = sprueche[index];
 </script>
   
 </body>
