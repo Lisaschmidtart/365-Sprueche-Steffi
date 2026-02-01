@@ -62,21 +62,36 @@
     <button onclick="window.close()">Schließen</button>
   </div>
 
-  <script>
-    const sprueche = [
-      "Jeder Tag ist eine neue Chance.",
-      "Du bist weiter, als du denkst.",
-      "Kleine Schritte sind auch Fortschritt.",
-      // ⬇️ hier später bis 365 erweitern
-    ];
+<script>
+  const sprueche = [
+    "Jeder Tag ist eine neue Chance.",
+    "Du bist weiter, als du denkst.",
+    "Kleine Schritte sind auch Fortschritt.",
+    // … hier bis 365 Sprüche eintragen
+  ];
 
-    const heute = new Date();
-    const start = new Date(heute.getFullYear(), 0, 0);
-    const tagDesJahres = Math.floor((heute - start) / (1000 * 60 * 60 * 24));
+  // Aktuelles Datum in Berliner Zeit
+  const heuteBerlin = new Date(
+    new Intl.DateTimeFormat("de-DE", {
+      timeZone: "Europe/Berlin",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(new Date()).split(".").reverse().join("-")
+  );
 
-    const index = (tagDesJahres - 1) % sprueche.length;
-    document.getElementById("spruch").innerText = sprueche[index];
-  </script>
+  // Jahresanfang (Berlin-Zeit)
+  const jahresStart = new Date(heuteBerlin.getFullYear(), 0, 1);
+
+  // Tagesnummer berechnen (1–365)
+  const tagDesJahres = Math.floor(
+    (heuteBerlin - jahresStart) / (1000 * 60 * 60 * 24)
+  ) + 1;
+
+  // Spruch auswählen
+  const index = (tagDesJahres - 1) % sprueche.length;
+  document.getElementById("spruch").innerText = sprueche[index];
+</script>
 
 </body>
 </html>
