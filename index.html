@@ -104,14 +104,19 @@
     "SMILE, it's free therapy.",
     ":(: Du entscheidest!",
     "Kurzer Reminder, falls du auf ein Wunder wartest: DU bist eins!",
-    "Streu Konfetti, sind ein Lied, bleib positiv und hab das Leben lieb.",
+    "Streu Konfetti, sing ein Lied, bleib positiv und hab das Leben lieb.",
     "Es hat keinerlei Nachteile, positiv in die Zukunf zu blicken.",
     "Don't stress over things you can't control.",
+    "
     
-    
-    
-    // … hier bis 365 Sprüche eintragen
   ];
+
+  const GEBURTSTAG = {
+    tag: 6,
+    monat: 3, // März
+    text: " 🎉 Heute ist ein ganz besonderer Tag. Vergiss nie, wie wertvoll du bist. 
+      Happy Birthday du wundervoller Mensch.♥️💐"
+  };
 
   // Aktuelles Datum in Berliner Zeit
   const heuteBerlin = new Date(
@@ -123,17 +128,28 @@
     }).format(new Date()).split(".").reverse().join("-")
   );
 
-  // Jahresanfang (Berlin-Zeit)
-  const jahresStart = new Date(heuteBerlin.getFullYear(), 0, 1);
+  const tag = heuteBerlin.getDate();
+  const monat = heuteBerlin.getMonth() + 1;
 
-  // Tagesnummer berechnen (1–365)
-  const tagDesJahres = Math.floor(
-    (heuteBerlin - jahresStart) / (1000 * 60 * 60 * 24)
-  ) + 1;
+  let anzeigeText;
 
-  // Spruch auswählen
-  const index = (tagDesJahres - 1) % sprueche.length;
-  document.getElementById("spruch").innerText = sprueche[index];
+  // 🎂 Sonderdatum prüfen
+  if (tag === GEBURTSTAG.tag && monat === GEBURTSTAG.monat) {
+    anzeigeText = GEBURTSTAG.text;
+  } else {
+    // Jahresanfang (Berlin-Zeit)
+    const jahresStart = new Date(heuteBerlin.getFullYear(), 0, 1);
+
+    // Tagesnummer berechnen
+    const tagDesJahres = Math.floor(
+      (heuteBerlin - jahresStart) / (1000 * 60 * 60 * 24)
+    ) + 1;
+
+    const index = (tagDesJahres - 1) % sprueche.length;
+    anzeigeText = sprueche[index];
+  }
+
+  document.getElementById("spruch").innerText = anzeigeText;
 </script>
   
 </body>
